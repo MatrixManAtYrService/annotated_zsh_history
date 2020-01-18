@@ -1,0 +1,71 @@
+# these notes caputred with this version:
+# zcashd --version
+# Zcash Daemon version v2.1.0-1
+#
+# zcash-cli getinfo
+#{
+#  "version": 2010051,
+#  "protocolversion": 170009,
+#  "walletversion": 60000,
+#}
+
+# get zcash
+sudo apt-get install apt-transport-https wget gnupg2 rsync
+wget -qO - https://apt.z.cash/zcash.asc | sudo apt-key add -
+echo "deb [arch=amd64] https://apt.z.cash/ jessie main" | sudo tee /etc/apt/sources.list.d/zcash.list
+sudo apt-get update
+sudo apt-get install zcash
+
+# start it in foreground
+touch ~/.zcash/zcash.conf
+zcashd
+
+# if blocks are downloaded elsewhere, get them
+rsync -arvz me@1.2.3.4:~/.zcash/blocks/ ~/.zcash/blocks/
+
+# start it in background
+zcashd -daemon
+zcash-cli getinfo
+
+# make a new shielded address and export its secret key
+zcash-cli help
+zcash-cli z_listaddresses
+zcash-cli z_getnewaddress
+zcash-cli z_listaddresses
+zcash-cli z_getbalance zs1y...fz5
+zcash-cli z_exportkey zs1y...fz5
+
+# view log output
+tail -f ~/.zcash/debug.log
+
+# stop daemon
+ps aux | grep zcashd
+kill -2 29132
+
+# make a transparent address and back up its key
+zcash-cli getnewaddress
+zcash-cli dumpprivkey t1K...4Y7
+
+# import the private key for the transparent address
+# this command hangs, and causes all subsequent commands to hang.  Seemingly indefinitley.
+# after restarting the daemon (and waiting for it to scan blocks for relevant transactions), the new address is there
+zcash-cli zcash-cli importprivkey L4qQ..a6pL
+ps aux | grep zcashd
+kill -9 30035
+zcashd -daemon
+zcash-cli getinfo
+zcash-cli getaddressesbyaccount ""
+zcash-cli z_getbalance t1K...4Y7
+
+# send from transparent to shielded
+zcash-cli z_sendmany 't1K...4Y7' '[{"address": "zs1y...fz5", "amount": 1.234}]'
+zcash-cli z_gettotalbalance
+# you can watch it get confirmed at: https://explorer.zcha.in/accounts/t1K...4Y7
+
+# send from shielded to transparent
+zcash-cli z_sendmany 'zs1y...fz5' '[{"address": "t1J...fcA", "amount": 4.321}]'
+zcash-cli z_getbalance zs1y4m3xqnnd8amvav5m9jug5wkzeua8cdhy4gvu7ukq4vdq9n7nle07e52qgjl3lzmxs3xkq5qfz5
+zcash-cli z_gettotalbalance
+
+# send from transparent to transparent
+zcash-cli z_sendmany 't1J...fcA' '[{"address": "t1K...WTZ", "amount": 4.321}]'
