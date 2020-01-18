@@ -64,7 +64,7 @@ zcash-cli z_gettotalbalance
 
 # send from shielded to transparent
 zcash-cli z_sendmany 'zs1y...fz5' '[{"address": "t1J...fcA", "amount": 4.321}]'
-zcash-cli z_getbalance zs1y4m3xqnnd8amvav5m9jug5wkzeua8cdhy4gvu7ukq4vdq9n7nle07e52qgjl3lzmxs3xkq5qfz5
+zcash-cli z_getbalance zs1...fz5
 zcash-cli z_gettotalbalance
 
 # send from transparent to transparent
