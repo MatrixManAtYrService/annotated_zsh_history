@@ -1,0 +1,8 @@
+# from qmk_firmware repo, flash to my rev3 planck
+sudo qmk flash -kb planck/rev3 -km matrixman
+
+# from qmk_firmware repo, build planck firmware
+rm *.bin ; docker run -v "${PWD}:${PWD}" qmkfm/base_container bash -c "cd ${PWD} ; make planck:matrixman"
+
+# from zsa_qmk_firmware repo, build
+rm *.bin ; docker run -v "${PWD}:${PWD}" qmkfm/base_container bash -c "cd ${PWD} ; make planck/ez:matrixman"
