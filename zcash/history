@@ -65,13 +65,18 @@ zcash-cli z_getbalance zs1y...fz5
 
 # send from transparent to shielded
 zcash-cli z_sendmany 't1K...4Y7' '[{"address": "zs1y...fz5", "amount": 1.234}]'
+
 zcash-cli z_gettotalbalance
 # you can watch it get confirmed at: https://explorer.zcha.in/accounts/t1K...4Y7
 
 # send from shielded to transparent
-zcash-cli z_sendmany 'zs1y...fz5' '[{"address": "t1J...fcA", "amount": 4.321}]'
+zcash-cli z_sendmany 'zs1y...fz5' '[{"address": "t1J...fcA", "amount": 4.321}]' # respons with an opid
+zcash-cli z_getoperationstatus '["opid-158...ea"]' # output will contain a transaction ID that you can watch on a block explorer
 zcash-cli z_getbalance zs1...fz5
 zcash-cli z_gettotalbalance
+
+# if you get unspent ZEC back from a transaction, it won't go to the address you started with.  See new addresses created in this way with this command
+zcash-cli listunspent
 
 # send from transparent to transparent
 zcash-cli z_sendmany 't1J...fcA' '[{"address": "t1K...WTZ", "amount": 4.321}]'
