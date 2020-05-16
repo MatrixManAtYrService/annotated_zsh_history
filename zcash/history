@@ -49,13 +49,19 @@ zcash-cli dumpprivkey t1K...4Y7
 # import the private key for the transparent address
 # this command hangs, and causes all subsequent commands to hang.  Seemingly indefinitley.
 # after restarting the daemon (and waiting for it to scan blocks for relevant transactions), the new address is there
-zcash-cli zcash-cli importprivkey L4qQ..a6pL
+zcash-cli importprivkey L4qQ..a6pL
 ps aux | grep zcashd
 kill -9 30035
 zcashd -daemon
+
+zcash-cli z_importkey secret-extended-key-main1q0...t30
+ps aux | grep zcashd
+kill -9 30036
+zcashd -daemon
+
 zcash-cli getinfo
 zcash-cli getaddressesbyaccount ""
-zcash-cli z_getbalance t1K...4Y7
+zcash-cli z_getbalance zs1y...fz5
 
 # send from transparent to shielded
 zcash-cli z_sendmany 't1K...4Y7' '[{"address": "zs1y...fz5", "amount": 1.234}]'
